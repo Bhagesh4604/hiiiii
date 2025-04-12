@@ -1,0 +1,53 @@
+use retail
+db.Products.insertMany([
+  {
+    name: "A",
+    brand: "X",
+    features: [
+      { name: "f1", value: "v1" },
+      { name: "f2", value: "v2" },
+      { name: "f3", value: "v3" }
+    ],
+    reviews: [
+      { user: "U1", rating: 5, comment: "Good" },
+      { user: "U2", rating: 4, comment: "Nice" },
+      { user: "U3", rating: 3, comment: "Ok" }
+    ]
+  },
+  {
+    name: "B",
+    brand: "Y",
+    features: [
+      { name: "f4", value: "v4" },
+      { name: "f5", value: "v5" }
+    ],
+    reviews: [
+      { user: "U4", rating: 4, comment: "Fine" },
+      { user: "U5", rating: 2, comment: "Bad" }
+    ]
+  }
+])
+
+db.Products.find(
+  { name: "A", "reviews.user": "U1" },
+  { "reviews.$": 1 }
+).pretty()
+
+db.Products.find(
+  { name: "A" },
+  { reviews: { $elemMatch: { rating: { $gt: 4 } } } }
+).pretty()
+
+db.Products.find(
+  { name: "B" },
+  { reviews: { $slice: 1 } }
+).pretty()
+
+db.Products.find(
+  { name: "A" },
+  {
+    name: 1,
+    features: { $slice: 2 },
+    reviews: { $elemMatch: { rating: 5 } }
+  }
+).pretty()

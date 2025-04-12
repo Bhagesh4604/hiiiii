@@ -1,0 +1,17 @@
+use movies
+db.createCollection("Movies")
+
+db.Movies.insertMany([
+  { title: "A", director: "X", year: 2000, ratings: { imdb: 8 } },
+  { title: "B", director: "Y", year: 2005, ratings: { imdb: 7 } },
+  { title: "C", director: "Z", year: 2010, ratings: { imdb: 9 } },
+  { title: "D", director: "W", year: 2015, ratings: { imdb: 8 } },
+  { title: "E", director: "V", year: 2020, ratings: { imdb: 10 } },
+  { title: "F", director: "U", year: 2022, ratings: { imdb: 6 } }
+])
+
+db.Movies.find({}, { title: 1, director: 1 })
+db.Movies.find({}, { title: 1, director: 1, _id: 0 })
+db.Movies.find({}, { ratings: 0 })
+db.Movies.find({ director: "X" }, { title: 1, year: 1, _id: 0 })
+db.Movies.find({}, { title: 1, director: 1, year: 1, _id: 0 }).limit(5)

@@ -1,0 +1,19 @@
+use company
+db.Employees.insertMany([
+  { name: "A", age: 30, dept: "hr", salary: 5000 },
+  { name: "B", age: 24, dept: "eng", salary: 7000 },
+  { name: "C", age: 29, dept: "eng", salary: 7500 },
+  { name: "D", age: 35, dept: "mkt", salary: 6000 },
+  { name: "E", age: 28, dept: "fin", salary: 8000 }
+])
+
+db.Employees.find({ dept: { $eq: "eng" } }).pretty()
+db.Employees.find({ dept: { $ne: "hr" } }).pretty()
+db.Employees.find({ age: { $gt: 30 } }).pretty()
+db.Employees.find({ salary: { $lt: 7000 } }).pretty()
+db.Employees.find({ age: { $lte: 28 } }).pretty()
+
+db.Employees.find({ $and: [ { dept: "eng" }, { salary: { $gt: 7000 } } ] }).pretty()
+db.Employees.find({ $or: [ { dept: "hr" }, { salary: { $lt: 6000 } } ] }).pretty()
+db.Employees.find({ dept: { $not: { $eq: "eng" } } }).pretty()
+db.Employees.find({ $nor: [ { dept: "hr" }, { salary: { $gt: 7500 } } ] }).pretty()

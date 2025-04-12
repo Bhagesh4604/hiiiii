@@ -1,0 +1,23 @@
+use books
+db.createCollection("ProgrammingBooks")
+
+db.ProgrammingBooks.insertMany([
+  { title: "A", author: "X", year: 2000, category: "code" },
+  { title: "B", author: "Y", year: 2005, category: "web" },
+  { title: "C", author: "Z", year: 2010, category: "python" },
+  { title: "D", author: "W", year: 2015, category: "code" },
+  { title: "E", author: "V", year: 2020, category: "js" }
+])
+
+db.ProgrammingBooks.find({ year: 2005 }).pretty()
+db.ProgrammingBooks.find({ $and: [ { category: "code" }, { year: { $gt: 2000 } } ] }).pretty()
+db.ProgrammingBooks.find({ $or: [ { category: "python" }, { year: 2000 } ] }).pretty()
+
+db.ProgrammingBooks.updateOne({ title: "A" }, { $set: { author: "XX" } })
+db.ProgrammingBooks.updateMany({ year: { $lt: 2010 } }, { $set: { category: "old" } })
+
+db.ProgrammingBooks.deleteOne({ title: "E" })
+db.ProgrammingBooks.deleteMany({ year: { $lt: 2010 } })
+
+db.ProgrammingBooks.find({}, { title: 1, author: 1, _id: 0 })
+db.ProgrammingBooks.find({}, { year: 0 })

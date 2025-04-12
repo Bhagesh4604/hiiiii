@@ -1,0 +1,40 @@
+use sales
+db.Sales.insertMany([
+  { date: new Date("2024-01-01"), product: "A", price: 100, qty: 1, customer: "C1" },
+  { date: new Date("2024-01-02"), product: "A", price: 100, qty: 2, customer: "C2" },
+  { date: new Date("2024-01-03"), product: "B", price: 20, qty: 5, customer: "C3" },
+  { date: new Date("2024-01-04"), product: "C", price: 50, qty: 3, customer: "C1" },
+  { date: new Date("2024-01-05"), product: "D", price: 70, qty: 1, customer: "C2" },
+  { date: new Date("2024-01-06"), product: "A", price: 100, qty: 1, customer: "C4" }
+])
+
+db.Sales.aggregate([
+  { $group: { _id: "$product", avgPrice: { $avg: "$price" } } }
+]).pretty()
+
+db.Sales.aggregate([
+  { $group: { _id: "$product", minPrice: { $min: "$price" } } }
+]).pretty()
+
+db.Sales.aggregate([
+  { $group: { _id: "$product", maxPrice: { $max: "$price" } } }
+]).pretty()
+
+db.Sales.aggregate([
+  { $group: { _id: "$customer", products: { $push: "$product" } } }
+]).pretty()
+
+db.Sales.aggregate([
+  { $group: { _id: "$customer", uniqueProducts: { $addToSet: "$product" } } }
+]).pretty()
+
+db.Sales.aggregate([
+  {
+    $group: {
+      _id: "$product",
+      totalQty: { $sum: "$qty" },
+      totalSales: { $sum: { $multiply: ["$price", "$qty"] } },
+      customers: { $addToSet: "$customer" }
+    }
+  }
+]).pretty()
